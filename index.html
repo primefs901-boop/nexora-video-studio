@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080711">
+<title>NEXORA | Video Studio</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+font-family:Arial,sans-serif;
+background:#080711;color:#fff;
+min-height:100vh;padding:20px;
+}
+body:before{
+content:"";position:fixed;inset:0;z-index:-1;
+background:radial-gradient(ellipse at top left,#54218c66,transparent 55%),radial-gradient(ellipse at bottom right,#075a9160,transparent 55%),#080711;
+}
+header{
+max-width:850px;margin:auto;padding:12px 0 25px;
+display:flex;align-items:center;justify-content:space-between;
+border-bottom:1px solid #ffffff18;
+}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{
+width:44px;height:44px;border-radius:14px;
+display:grid;place-items:center;font-size:25px;font-weight:900;
+background:linear-gradient(135deg,#b34cff,#456aff);
+box-shadow:0 0 25px #914cff60;
+}
+.brand h2{letter-spacing:3px;font-size:21px}
+.brand small{display:block;color:#a69abf;letter-spacing:3px;margin-top:4px;font-size:9px}
+.badge{font-size:10px;color:#7dffc0;border:1px solid #37d99550;padding:9px;border-radius:20px}
+main{max-width:750px;margin:65px auto 30px}
+.hero{text-align:center}
+.tag{
+display:inline-block;padding:9px 14px;border-radius:30px;
+border:1px solid #b17aff50;color:#d2aaff;font-size:11px;
+letter-spacing:1px;background:#a64cff12;
+}
+h1{font-size:clamp(38px,8vw,68px);line-height:1.12;margin-top:25px;letter-spacing:-2px}
+.gradient{
+background:linear-gradient(90deg,#d19aff,#8585ff,#4ce4ff);
+-webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero p{max-width:470px;margin:18px auto;color:#a29bb5;font-size:14px;line-height:1.8}
+.card{
+margin-top:38px;padding:24px;border-radius:23px;
+border:1px solid #b69aff30;
+background:linear-gradient(145deg,#201832ed,#100e1ced);
+box-shadow:0 20px 65px #0007,0 0 35px #843bff12;
+}
+.card h3{font-size:17px;margin-bottom:20px}
+.inputbox{
+display:flex;align-items:center;gap:10px;padding:7px 10px;
+border:1px solid #ffffff20;border-radius:13px;background:#090811;
+}
+input{
+width:100%;min-width:0;padding:12px 2px;
+border:0;outline:0;background:transparent;color:white;font-size:13px;
+}
+input::placeholder{color:#777087}
+button{cursor:pointer}
+#paste{
+padding:10px;border-radius:9px;border:1px solid #ffffff20;
+background:#ffffff0b;color:#d6c7f8;font-size:11px;
+}
+#start{
+width:100%;margin-top:15px;padding:17px;border:0;border-radius:13px;
+background:linear-gradient(100deg,#a044f5,#5967ff,#36c9e8);
+color:white;font-size:14px;font-weight:bold;
+box-shadow:0 8px 25px #8148f544;
+}
+#start:disabled{opacity:.6}
+.note{text-align:center;color:#817990;font-size:10px;line-height:1.8;margin-top:15px}
+</style>
+</head>
+<body>
+<header>
+<div class="brand">
+<div class="logo">N</div>
+<div><h2>NEXORA</h2><small>VIDEO STUDIO</small></div>
+</div>
+<div class="badge">● SYSTEM READY</div>
+</header>
+<main>
+<section class="hero">
+<div class="tag">✦ YOUR PERSONAL VIDEO STUDIO</div>
+<h1>Save the moment.<br><span class="gradient">Keep the magic.</span></h1>
+<p>A premium, simple video-saving experience, designed for your phone.</p>
+</section>
+<section class="card">
+<h3>✦ &nbsp; Video Downloader</h3>
+<form id="form">
+<div class="inputbox">
+<span style="color:#b48aff">↗</span>
+<input id="url" type="url" placeholder="Paste video URL here..." required>
+<button id="paste" type="button">PASTE</button>
+</div>
+<button id="start" type="submit">↓ &nbsp; START DOWNLOAD</button>
+</form>
+<p class="note">Download only videos you own or are authorized to save.</p>
+
+
+<div id="progress" style="display:none;margin-top:22px;padding:18px;border:1px solid #a77aff40;border-radius:15px;background:#090812">
+  <div style="display:flex;justify-content:space-between;gap:10px;font-size:12px;margin-bottom:13px">
+    <b id="status">Preparing download...</b>
+    <b id="percent" style="color:#c59aff">0%</b>
+  </div>
+  <div style="height:7px;background:#ffffff16;border-radius:20px;overflow:hidden">
+    <div id="bar" style="height:100%;width:0%;background:linear-gradient(90deg,#a044f5,#36d9ff);transition:width .3s"></div>
+  </div>
+  <div style="display:flex;justify-content:space-between;gap:8px;color:#a29ab7;font-size:11px;margin-top:13px">
+    <span>Speed: <b id="speed">--</b></span>
+    <span>ETA: <b id="eta">--</b></span>
+  </div>
+  <p id="message" style="font-size:12px;line-height:1.7;color:#c8bbdf;margin-top:13px;overflow-wrap:anywhere"></p>
+  <a id="save" href="#" style="display:none;text-decoration:none;text-align:center;background:#164b3b;color:#8affc7;padding:14px;border-radius:11px;margin-top:15px;font-size:13px;font-weight:bold">↓ &nbsp; SAVE TO PHONE</a>
+</div>
+</section>
+
+<section style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:18px">
+  <div style="padding:16px 10px;background:#ffffff08;border:1px solid #ffffff12;border-radius:14px">
+    <div style="font-size:22px">⚡</div>
+    <b style="display:block;font-size:12px;margin-top:9px">Smart Engine</b>
+    <p style="font-size:10px;line-height:1.6;color:#958da8;margin-top:7px">Simple download workflow.</p>
+  </div>
+  <div style="padding:16px 10px;background:#ffffff08;border:1px solid #ffffff12;border-radius:14px">
+    <div style="font-size:22px">◉</div>
+    <b style="display:block;font-size:12px;margin-top:9px">Live Progress</b>
+    <p style="font-size:10px;line-height:1.6;color:#958da8;margin-top:7px">Track your download.</p>
+  </div>
+  <div style="padding:16px 10px;background:#ffffff08;border:1px solid #ffffff12;border-radius:14px">
+    <div style="font-size:22px">✧</div>
+    <b style="display:block;font-size:12px;margin-top:9px">Mobile First</b>
+    <p style="font-size:10px;line-height:1.6;color:#958da8;margin-top:7px">Made for your phone.</p>
+  </div>
+</section>
+</main>
+
+<footer style="text-align:center;color:#756d88;font-size:10px;line-height:2;padding:25px 10px">
+  <b style="letter-spacing:4px;color:#b4a0dc">N E X O R A</b><br>
+  VIDEO STUDIO · BUILT FOR YOUR SCREEN
+</footer>
+<script>
+const form = document.getElementById("form");
+const urlInput = document.getElementById("url");
+const start = document.getElementById("start");
+const progress = document.getElementById("progress");
+const bar = document.getElementById("bar");
+const percent = document.getElementById("percent");
+const statusText = document.getElementById("status");
+const speed = document.getElementById("speed");
+const eta = document.getElementById("eta");
+const message = document.getElementById("message");
+const save = document.getElementById("save");
+
+document.getElementById("paste").onclick = async () => {
+    try {
+        urlInput.value = await navigator.clipboard.readText();
+    } catch (e) {
+        message.textContent = "Clipboard unavailable. URL ko manually paste karo.";
+        progress.style.display = "block";
+    }
+};
+
+form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    if (!urlInput.value.trim()) return;
+
+    start.disabled = true;
+    start.textContent = "⏳ STARTING...";
+    progress.style.display = "block";
+    save.style.display = "none";
+    bar.style.width = "0%";
+    percent.textContent = "0%";
+    statusText.textContent = "Preparing download...";
+    message.textContent = "Connecting to NEXORA...";
+    speed.textContent = "--";
+    eta.textContent = "--";
+
+    try {
+        const response = await fetch("/download", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({url: urlInput.value.trim()})
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error || "Download start nahi hua.");
+        }
+
+        checkStatus(data.job_id);
+    } catch (err) {
+        showError(err.message);
+    }
+});
+
+async function checkStatus(jobId) {
+    try {
+        const response = await fetch("/status/" + encodeURIComponent(jobId));
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error || "Status nahi mila.");
+        }
+
+        const p = Math.min(100, Math.max(0, Number(data.progress || 0)));
+        bar.style.width = p + "%";
+        percent.textContent = p + "%";
+        speed.textContent = data.speed || "--";
+        eta.textContent = data.eta || "--";
+
+        if (data.status === "completed") {
+            bar.style.width = "100%";
+            percent.textContent = "100%";
+            statusText.textContent = "✓ Download Ready";
+            message.textContent = "File ready hai! Neeche button dabao.";
+            save.href = "/file/" + encodeURIComponent(jobId);
+            save.style.display = "block";
+            start.disabled = false;
+            start.textContent = "↓ DOWNLOAD ANOTHER";
+            return;
+        }
+
+        if (data.status === "error") {
+            throw new Error(data.error || "Download failed.");
+        }
+
+        statusText.textContent =
+            data.status === "queued" ? "Waiting..." : "Downloading video...";
+        message.textContent = "Download chal raha hai. Page open rakho.";
+        setTimeout(() => checkStatus(jobId), 1000);
+
+    } catch (err) {
+        showError(err.message);
+    }
+}
+
+function showError(text) {
+    statusText.textContent = "Download Failed";
+    message.textContent = text;
+    start.disabled = false;
+    start.textContent = "↻ TRY AGAIN";
+}
+</script>
+</body>
+</html>
